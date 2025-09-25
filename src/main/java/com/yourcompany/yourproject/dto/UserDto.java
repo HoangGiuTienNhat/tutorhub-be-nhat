@@ -8,10 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
-    private Long id;
-    private String username;
+    private Long uid;
+    private String userName;
     private String email;
-    private String firstName;
-    private String lastName;
+    private String role;
     // Note: Password should not be included in DTOs for security reasons
 }
