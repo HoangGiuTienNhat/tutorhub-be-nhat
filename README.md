@@ -144,14 +144,14 @@ spring.jpa.hibernate.ddl-auto=update
 ### Bước 1: Đăng ký tài khoản mới
 
 ```
-POST http://localhost:8080/auth/signup
+POST http://localhost:8080/api/auth/register
 Content-Type: application/json
 
 {
-    "username": "testuser",
-    "email": "test@example.com",
-    "password": "password123",
-    "role": "STUDENT"
+    "email": "pctsv@hcmut.edu.vn",
+    "password": "12345678",
+    "userName": "Phong CTSV",
+    "role": "Officer"
 }
 ```
 
