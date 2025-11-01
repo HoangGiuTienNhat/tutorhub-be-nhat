@@ -71,5 +71,18 @@ public class DataInitializer implements CommandLineRunner {
             userRepository.save(tutorUser);
             log.info("Tutor user created: tutor@tutorhub.com with password: tutor123");
         }
+
+        // Create HCMUT student user
+        if (!userRepository.existsByEmail("student@hcmut.edu.vn")) {
+            User hcmutStudent = User.builder()
+                    .email("student@hcmut.edu.vn")
+                    .userName("HCMUT Student")
+                    .password(passwordEncoder.encode("hcmut123"))
+                    .role("Student")
+                    .build();
+
+            userRepository.save(hcmutStudent);
+            log.info("HCMUT student user created: student@hcmut.edu.vn with password: hcmut123");
+        }
     }
 }

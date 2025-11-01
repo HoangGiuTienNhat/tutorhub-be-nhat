@@ -25,17 +25,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final CustomUserDetailsService customUserDetailsService;
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getServletPath();
-        System.out.println("ServletPath = " + path);
-        // Only skip authentication for login, register, and test endpoints
-        return path.equals("/auth/signin") || path.equals("/auth/register") ||
-                path.equals("/auth/test") || path.startsWith("/public/") ||
-                path.startsWith("/api/auth/signin") || path.startsWith("/api/auth/register") ||
-                path.startsWith("/api/auth/test") || path.startsWith("/api/public/");
-    }
-
-    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
