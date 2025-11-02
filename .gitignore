@@ -31,7 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-# Application configuration files
-src/main/resources/application.properties
-src/main/resources/application.yml
