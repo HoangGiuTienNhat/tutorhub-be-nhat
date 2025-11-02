@@ -4,9 +4,9 @@ spring:
 
   # Database Configuration
   datasource:
-    url: jdbc:mysql://localhost:3306/tutorhub_db
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:password}
+    url: jdbc:mysql://root:mJSOVKOZAFXFtfGOjiaMxJrIjQwoMwFs@mysql.railway.internal:3306/railway
+    username: root
+    password: mJSOVKOZAFXFtfGOjiaMxJrIjQwoMwFs
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   # JPA Configuration
