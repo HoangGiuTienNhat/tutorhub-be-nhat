@@ -7,7 +7,7 @@ import java.util.Set;
 // import com.yourcompany.yourproject.entity.Faculty;
 
 @Entity
-@Table(name = "`groups`")
+@Table(name = "student_groups")
 public class Group {
 
     @Id
