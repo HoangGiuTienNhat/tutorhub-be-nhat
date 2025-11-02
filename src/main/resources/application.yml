@@ -4,7 +4,7 @@ spring:
 
   # Database Configuration
   datasource:
-    url: jdbc:mysql://root:mJSOVKOZAFXFtfGOjiaMxJrIjQwoMwFs@mysql.railway.internal:3306/railway
+    url: jdbc:mysql://root:mJSOVKOZAFXFtfGOjiaMxJrIjQwoMwFs@gondola.proxy.rlwy.net:42852/railway
     username: root
     password: mJSOVKOZAFXFtfGOjiaMxJrIjQwoMwFs
     driver-class-name: com.mysql.cj.jdbc.Driver
