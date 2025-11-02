@@ -32,10 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 
-<<<<<<< HEAD
-
-=======
->>>>>>> e5d4ce7ebb4ea29a80f3feeb59e5c23bb3ab849e
 # Application configuration files
 src/main/resources/application.properties
 src/main/resources/application.yml
