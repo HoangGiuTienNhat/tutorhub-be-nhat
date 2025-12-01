@@ -3,6 +3,8 @@ package com.yourcompany.yourproject.entity;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "consultations")
@@ -36,6 +38,12 @@ public class Consultation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id", nullable = false)
     private Group group;
+
+    @ManyToMany(mappedBy = "registeredConsultations", fetch = FetchType.LAZY)
+    private Set<User> registeredUsers = new HashSet<>();
+
+    @OneToMany(mappedBy = "consultation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Feedback> feedbacks = new HashSet<>();
 
     // Getters and Setters
     public Long getId() {
@@ -109,5 +117,20 @@ public class Consultation {
     public void setGroup(Group group) {
         this.group = group;
     }
-}
 
+    public Set<User> getRegisteredUsers() {
+        return registeredUsers;
+    }
+
+    public void setRegisteredUsers(Set<User> registeredUsers) {
+        this.registeredUsers = registeredUsers;
+    }
+
+    public Set<Feedback> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public void setFeedbacks(Set<Feedback> feedbacks) {
+        this.feedbacks = feedbacks;
+    }
+}

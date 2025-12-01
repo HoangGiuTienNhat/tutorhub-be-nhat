@@ -37,4 +37,12 @@ public class User {
     @Builder.Default
     private Set<Group> joinedGroups = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(name = "consultation_registrations", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "consultation_id"))
+    @Builder.Default
+    private Set<Consultation> registeredConsultations = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<Feedback> feedbacks = new HashSet<>();
 }

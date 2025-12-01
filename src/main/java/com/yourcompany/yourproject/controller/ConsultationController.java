@@ -66,5 +66,18 @@ public class ConsultationController {
         consultationService.deleteConsultation(id);
         return ResponseEntity.noContent().build();
     }
-}
 
+    @PostMapping("/{id}/register")
+    public ResponseEntity<Void> registerForConsultation(@PathVariable Long id) {
+        log.info("Registering for consultation with id: {}", id);
+        consultationService.registerForConsultation(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/unregister")
+    public ResponseEntity<Void> unregisterFromConsultation(@PathVariable Long id) {
+        log.info("Unregistering from consultation with id: {}", id);
+        consultationService.unregisterFromConsultation(id);
+        return ResponseEntity.ok().build();
+    }
+}
