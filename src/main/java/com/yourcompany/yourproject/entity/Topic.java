@@ -26,5 +26,5 @@ public class Topic {
 
     @ManyToMany(mappedBy = "topics")
     @Builder.Default
-    private Set<Group> groups = new HashSet<>();
+    private Set<Group> studentGroups = new HashSet<>();
 }

@@ -1,7 +1,9 @@
 package com.yourcompany.yourproject.controller;
 
+import com.yourcompany.yourproject.dto.GroupJoinRequestDto;
 import com.yourcompany.yourproject.dto.GroupRequestDto;
 import com.yourcompany.yourproject.dto.GroupResponseDto;
+import com.yourcompany.yourproject.dto.UserDto;
 import com.yourcompany.yourproject.service.GroupService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -53,4 +55,21 @@ public class GroupController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/join")
+    public ResponseEntity<Void> joinGroup(@Valid @RequestBody GroupJoinRequestDto groupJoinRequestDto) {
+        groupService.joinGroups(groupJoinRequestDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{groupId}/users")
+    public ResponseEntity<List<UserDto>> getUsersInGroup(@PathVariable Long groupId) {
+        List<UserDto> users = groupService.getUsersInGroup(groupId);
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/my-groups")
+    public ResponseEntity<List<GroupResponseDto>> getMyGroups() {
+        List<GroupResponseDto> groups = groupService.getJoinedGroupsForCurrentUser();
+        return ResponseEntity.ok(groups);
+    }
 }

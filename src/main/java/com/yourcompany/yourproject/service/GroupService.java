@@ -140,4 +140,49 @@ public class GroupService {
 
         return groupResponseDto;
     }
+
+    @Transactional
+    public void joinGroups(GroupJoinRequestDto groupJoinRequestDto) {
+        String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+                .getUsername();
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + username));
+
+        List<Group> groupsToJoin = groupRepository.findAllById(groupJoinRequestDto.getGroupIds());
+        if (groupsToJoin.size() != groupJoinRequestDto.getGroupIds().size()) {
+            throw new ResourceNotFoundException("One or more groups not found.");
+        }
+
+        for (Group group : groupsToJoin) {
+            if (group.getJoinedUsers().size() >= group.getStudentLimit()) {
+                throw new IllegalStateException("Group '" + group.getGroupName() + "' is already full.");
+            }
+            user.getJoinedGroups().add(group);
+            group.getJoinedUsers().add(user);
+        }
+
+        userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserDto> getUsersInGroup(Long groupId) {
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new ResourceNotFoundException("Group not found with id: " + groupId));
+
+        return group.getJoinedUsers().stream()
+                .map(user -> new UserDto(user.getUid(), user.getUserName(), user.getEmail(), user.getRole()))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<GroupResponseDto> getJoinedGroupsForCurrentUser() {
+        String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+                .getUsername();
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + username));
+
+        return user.getJoinedGroups().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
 }
