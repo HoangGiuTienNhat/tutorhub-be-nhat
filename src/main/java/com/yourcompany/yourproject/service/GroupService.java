@@ -1,21 +1,6 @@
 package com.yourcompany.yourproject.service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.yourcompany.yourproject.dto.FacultyResponseDto;
-import com.yourcompany.yourproject.dto.GroupRequestDto;
-import com.yourcompany.yourproject.dto.GroupResponseDto;
-import com.yourcompany.yourproject.dto.TopicResponseDto;
-import com.yourcompany.yourproject.dto.UserDto;
+import com.yourcompany.yourproject.dto.*;
 import com.yourcompany.yourproject.entity.Faculty;
 import com.yourcompany.yourproject.entity.Group;
 import com.yourcompany.yourproject.entity.Topic;
@@ -25,6 +10,16 @@ import com.yourcompany.yourproject.repository.FacultyRepository;
 import com.yourcompany.yourproject.repository.GroupRepository;
 import com.yourcompany.yourproject.repository.TopicRepository;
 import com.yourcompany.yourproject.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class GroupService {
@@ -133,8 +128,7 @@ public class GroupService {
 
         // Convert associated entities to DTOs
         User tutor = group.getTutor();
-        groupResponseDto.setTutor(new UserDto(tutor.getUid(), tutor.getUserName(), tutor.getEmail(), tutor.getRole(),
-                tutor.getPersonalEmail(), tutor.getPhoneNumber(), tutor.getAddress()));
+        groupResponseDto.setTutor(new UserDto(tutor.getUid(), tutor.getUserName(), tutor.getEmail(), tutor.getRole()));
 
         Faculty faculty = group.getFaculty();
         groupResponseDto.setFaculty(new FacultyResponseDto(faculty.getId(), faculty.getName()));
