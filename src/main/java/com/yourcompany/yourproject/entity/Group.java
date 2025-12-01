@@ -43,6 +43,9 @@ public class Group {
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
 
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Consultation> consultations = new HashSet<>();
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -122,5 +125,13 @@ public class Group {
 
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
+    }
+
+    public Set<Consultation> getConsultations() {
+        return consultations;
+    }
+
+    public void setConsultations(Set<Consultation> consultations) {
+        this.consultations = consultations;
     }
 }
