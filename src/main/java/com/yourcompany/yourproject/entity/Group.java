@@ -46,6 +46,9 @@ public class Group {
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Consultation> consultations = new HashSet<>();
 
+    @ManyToMany(mappedBy = "joinedGroups", fetch = FetchType.LAZY)
+    private Set<User> joinedUsers = new HashSet<>();
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -133,5 +136,13 @@ public class Group {
 
     public void setConsultations(Set<Consultation> consultations) {
         this.consultations = consultations;
+    }
+
+    public Set<User> getJoinedUsers() {
+        return joinedUsers;
+    }
+
+    public void setJoinedUsers(Set<User> joinedUsers) {
+        this.joinedUsers = joinedUsers;
     }
 }

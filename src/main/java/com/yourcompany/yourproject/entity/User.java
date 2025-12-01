@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -28,4 +31,10 @@ public class User {
     private String password;
 
     private String role;
+
+    @ManyToMany
+    @JoinTable(name = "user_groups", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
+    @Builder.Default
+    private Set<Group> joinedGroups = new HashSet<>();
+
 }
