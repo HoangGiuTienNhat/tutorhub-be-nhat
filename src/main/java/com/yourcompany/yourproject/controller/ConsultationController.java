@@ -2,7 +2,11 @@ package com.yourcompany.yourproject.controller;
 
 import com.yourcompany.yourproject.dto.ConsultationRequestDto;
 import com.yourcompany.yourproject.dto.ConsultationResponseDto;
+import com.yourcompany.yourproject.dto.ConsultationMemberReviewDto;
+import com.yourcompany.yourproject.dto.StudentReviewListRequestDto;
+import com.yourcompany.yourproject.dto.StudentReviewResponseDto;
 import com.yourcompany.yourproject.service.ConsultationService;
+import com.yourcompany.yourproject.service.StudentReviewService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,9 @@ public class ConsultationController {
 
     @Autowired
     private ConsultationService consultationService;
+
+    @Autowired
+    private StudentReviewService studentReviewService;
 
     @PostMapping
     public ResponseEntity<ConsultationResponseDto> createConsultation(
@@ -79,5 +86,27 @@ public class ConsultationController {
         log.info("Unregistering from consultation with id: {}", id);
         consultationService.unregisterFromConsultation(id);
         return ResponseEntity.ok().build();
+    }
+
+    // Student Review Endpoints
+
+    @PostMapping("/{consultationId}/reviews")
+    public ResponseEntity<List<StudentReviewResponseDto>> createOrUpdateReviews(
+            @PathVariable Long consultationId,
+            @Valid @RequestBody StudentReviewListRequestDto requestDto) {
+        List<StudentReviewResponseDto> reviews = studentReviewService.createOrUpdateReviews(consultationId, requestDto);
+        return ResponseEntity.ok(reviews);
+    }
+
+    @GetMapping("/{consultationId}/reviews")
+    public ResponseEntity<List<StudentReviewResponseDto>> getReviewsForConsultation(@PathVariable Long consultationId) {
+        List<StudentReviewResponseDto> reviews = studentReviewService.getReviewsForConsultation(consultationId);
+        return ResponseEntity.ok(reviews);
+    }
+
+    @GetMapping("/{consultationId}/reviewable-students")
+    public ResponseEntity<List<ConsultationMemberReviewDto>> getReviewableStudents(@PathVariable Long consultationId) {
+        List<ConsultationMemberReviewDto> students = studentReviewService.getReviewableStudents(consultationId);
+        return ResponseEntity.ok(students);
     }
 }
