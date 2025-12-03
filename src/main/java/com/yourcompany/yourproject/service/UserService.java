@@ -2,6 +2,7 @@ package com.yourcompany.yourproject.service;
 
 import com.yourcompany.yourproject.dto.FacultyResponseDto;
 import com.yourcompany.yourproject.dto.RegisterRequest;
+import com.yourcompany.yourproject.dto.UpdateProfileRequest;
 import com.yourcompany.yourproject.dto.UserDto;
 import com.yourcompany.yourproject.entity.Faculty;
 import com.yourcompany.yourproject.entity.User;
@@ -49,7 +50,17 @@ public class UserService {
     }
 
     public UserDto register(RegisterRequest request) {
+        // Since UID is mandatory, we check for its existence directly.
+        if (userRepository.existsById(request.getUid())) {
+            throw new IllegalArgumentException("Error: User ID is already taken!");
+        }
+
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new IllegalArgumentException("Error: Email is already in use!");
+        }
+
         User user = new User();
+        user.setUid(request.getUid()); // UID is now mandatory and set directly.
         user.setEmail(request.getEmail());
         user.setUserName(request.getUserName());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -102,6 +113,28 @@ public class UserService {
                 user.getUserName(),
                 user.getEmail(),
                 user.getRole(),
+                user.getPersonalEmail(),
+                user.getPhoneNumber(),
+                user.getAddress(),
                 facultyDto);
+    }
+
+    public UserDto updateProfile(String email, UpdateProfileRequest request) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+
+        // Update only the allowed fields
+        if (request.getPersonalEmail() != null && !request.getPersonalEmail().isEmpty()) {
+            user.setPersonalEmail(request.getPersonalEmail());
+        }
+        if (request.getPhoneNumber() != null && !request.getPhoneNumber().isEmpty()) {
+            user.setPhoneNumber(request.getPhoneNumber());
+        }
+        if (request.getAddress() != null && !request.getAddress().isEmpty()) {
+            user.setAddress(request.getAddress());
+        }
+
+        User updatedUser = userRepository.save(user);
+        return convertToDto(updatedUser);
     }
 }

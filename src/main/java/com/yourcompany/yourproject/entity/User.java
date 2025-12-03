@@ -22,7 +22,6 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long uid;
 
@@ -36,6 +35,14 @@ public class User {
     private String password;
 
     private String role;
+
+    @Column(name = "personal_email")
+    private String personalEmail;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    private String address;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "faculty_id")

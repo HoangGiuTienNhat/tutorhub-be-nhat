@@ -12,5 +12,8 @@ public class UserDto {
     private String userName;
     private String email;
     private String role;
+    private String personalEmail;
+    private String phoneNumber;
+    private String address;
     private FacultyResponseDto faculty;
 }

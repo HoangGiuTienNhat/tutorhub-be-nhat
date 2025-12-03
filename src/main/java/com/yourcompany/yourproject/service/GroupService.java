@@ -134,6 +134,9 @@ public class GroupService {
                                 tutor.getUserName(),
                                 tutor.getEmail(),
                                 tutor.getRole(),
+                                tutor.getPersonalEmail(),
+                                tutor.getPhoneNumber(),
+                                tutor.getAddress(),
                                 tutor.getFaculty() != null ? new com.yourcompany.yourproject.dto.FacultyResponseDto(
                                                 tutor.getFaculty().getId(), tutor.getFaculty().getName()) : null));
 
@@ -185,6 +188,9 @@ public class GroupService {
                                                 user.getUserName(),
                                                 user.getEmail(),
                                                 user.getRole(),
+                                                user.getPersonalEmail(),
+                                                user.getPhoneNumber(),
+                                                user.getAddress(),
                                                 user.getFaculty() != null
                                                                 ? new com.yourcompany.yourproject.dto.FacultyResponseDto(
                                                                                 user.getFaculty().getId(),

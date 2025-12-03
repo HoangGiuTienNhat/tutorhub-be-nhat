@@ -148,6 +148,9 @@ public class StudentReviewService {
                                 student.getUserName(),
                                 student.getEmail(),
                                 student.getRole(),
+                                student.getPersonalEmail(),
+                                student.getPhoneNumber(),
+                                student.getAddress(),
                                 student.getFaculty() != null ? new com.yourcompany.yourproject.dto.FacultyResponseDto(
                                                 student.getFaculty().getId(), student.getFaculty().getName()) : null);
 

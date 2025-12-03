@@ -103,6 +103,9 @@ public class FeedbackService {
                 user.getUserName(),
                 user.getEmail(),
                 user.getRole(),
+                user.getPersonalEmail(),
+                user.getPhoneNumber(),
+                user.getAddress(),
                 user.getFaculty() != null
                         ? new com.yourcompany.yourproject.dto.FacultyResponseDto(user.getFaculty().getId(),
                                 user.getFaculty().getName())

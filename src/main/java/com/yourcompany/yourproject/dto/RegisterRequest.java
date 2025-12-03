@@ -3,6 +3,7 @@ package com.yourcompany.yourproject.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
 import lombok.Data;
 
 @Data
@@ -12,6 +13,9 @@ public class RegisterRequest {
     private String email;
 
     @NotBlank
+
+    @NotNull(message = "User ID cannot be null")
+    private Long uid;
     private String userName;
 
     @NotBlank
@@ -23,4 +27,3 @@ public class RegisterRequest {
     // optional for tutors/admins; required for students in this requirement
     private Long facultyId;
 }
-
