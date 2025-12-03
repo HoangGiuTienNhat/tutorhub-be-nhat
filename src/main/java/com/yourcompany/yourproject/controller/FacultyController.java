@@ -2,6 +2,7 @@ package com.yourcompany.yourproject.controller;
 
 import com.yourcompany.yourproject.dto.FacultyRequestDto;
 import com.yourcompany.yourproject.dto.FacultyResponseDto;
+import com.yourcompany.yourproject.dto.FacultyStudentDto;
 import com.yourcompany.yourproject.entity.Faculty;
 import com.yourcompany.yourproject.service.FacultyService;
 import jakarta.validation.Valid;
@@ -60,5 +61,25 @@ public class FacultyController {
     public ResponseEntity<Void> deleteFaculty(@PathVariable Long id) {
         facultyService.deleteFaculty(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Get list of students in a faculty with optional filtering
+     *
+     * @param facultyId Faculty ID
+     * @param groupId   Optional group ID for filtering
+     * @param tutorId   Optional tutor ID for filtering
+     * @return List of students with their review information
+     */
+    @GetMapping("/{id}/students")
+    public ResponseEntity<List<FacultyStudentDto>> getFacultyStudents(
+            @PathVariable("id") Long facultyId,
+            @RequestParam(required = false) Long groupId,
+            @RequestParam(required = false) Long tutorId) {
+        log.info("FacultyController.getFacultyStudents called with facultyId: {}, groupId: {}, tutorId: {}",
+                facultyId, groupId, tutorId);
+        List<FacultyStudentDto> students = facultyService.getFacultyStudents(facultyId, groupId, tutorId);
+        log.info("Retrieved {} students for faculty: {}", students.size(), facultyId);
+        return ResponseEntity.ok(students);
     }
 }

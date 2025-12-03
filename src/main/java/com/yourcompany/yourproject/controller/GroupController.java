@@ -72,4 +72,10 @@ public class GroupController {
         List<GroupResponseDto> groups = groupService.getJoinedGroupsForCurrentUser();
         return ResponseEntity.ok(groups);
     }
+
+    @GetMapping("/my-created-groups")
+    public ResponseEntity<List<GroupResponseDto>> getMyCreatedGroups() {
+        List<GroupResponseDto> groups = groupService.getCreatedGroupsForCurrentUser();
+        return ResponseEntity.ok(groups);
+    }
 }

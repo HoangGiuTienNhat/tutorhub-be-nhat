@@ -18,11 +18,10 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString(exclude = { "password", "joinedGroups", "registeredConsultations", "feedbacks" })
+@ToString(exclude = { "password", "joinedGroups", "registeredConsultations", "feedbacks", "faculty" })
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long uid;
 
@@ -36,6 +35,18 @@ public class User {
     private String password;
 
     private String role;
+
+    @Column(name = "personal_email")
+    private String personalEmail;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    private String address;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "faculty_id")
+    private Faculty faculty;
 
     @ManyToMany
     @JoinTable(name = "user_groups", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))

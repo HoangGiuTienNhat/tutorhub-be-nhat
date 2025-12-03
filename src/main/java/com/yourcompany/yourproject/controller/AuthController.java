@@ -2,8 +2,8 @@ package com.yourcompany.yourproject.controller;
 
 import com.yourcompany.yourproject.dto.LoginRequest;
 import com.yourcompany.yourproject.dto.JwtResponse;
+import com.yourcompany.yourproject.dto.RegisterRequest;
 import com.yourcompany.yourproject.dto.UserDto;
-import com.yourcompany.yourproject.entity.User;
 import com.yourcompany.yourproject.service.UserService;
 import com.yourcompany.yourproject.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -82,14 +82,14 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest request) {
         try {
-            log.info("Attempting to register user: {}", user.getEmail());
-            UserDto createdUser = userService.createUser(user);
-            log.info("User registered successfully: {}", user.getEmail());
+            log.info("Attempting to register user: {}", request.getEmail());
+            UserDto createdUser = userService.register(request);
+            log.info("User registered successfully: {}", request.getEmail());
             return ResponseEntity.ok(createdUser);
         } catch (Exception e) {
-            log.error("User registration failed for: {}", user.getEmail(), e);
+            log.error("User registration failed for: {}", request.getEmail(), e);
             return ResponseEntity.status(500).body("Registration failed: " + e.getMessage());
         }
     }

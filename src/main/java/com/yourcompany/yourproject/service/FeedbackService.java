@@ -98,7 +98,18 @@ public class FeedbackService {
 
     private FeedbackResponseDto convertToDto(Feedback feedback) {
         User user = feedback.getUser();
-        UserDto userDto = new UserDto(user.getUid(), user.getUserName(), user.getEmail(), user.getRole());
+        UserDto userDto = new UserDto(
+                user.getUid(),
+                user.getUserName(),
+                user.getEmail(),
+                user.getRole(),
+                user.getPersonalEmail(),
+                user.getPhoneNumber(),
+                user.getAddress(),
+                user.getFaculty() != null
+                        ? new com.yourcompany.yourproject.dto.FacultyResponseDto(user.getFaculty().getId(),
+                                user.getFaculty().getName())
+                        : null);
         return new FeedbackResponseDto(
                 feedback.getId(),
                 feedback.getRating(),
