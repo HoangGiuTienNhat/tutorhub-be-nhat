@@ -1,6 +1,8 @@
 package com.yourcompany.yourproject.service;
 
 import com.yourcompany.yourproject.dto.StatisticDto;
+import com.yourcompany.yourproject.dto.StatisticFilterDto;
+import com.yourcompany.yourproject.dto.UserStatisticDto;
 import com.yourcompany.yourproject.entity.Faculty;
 import com.yourcompany.yourproject.entity.Topic;
 import com.yourcompany.yourproject.repository.*;
@@ -46,5 +48,23 @@ public class StatisticService {
             long consultationCount = consultationRepository.countByTopic(topicId, startDate, endDate);
             return new StatisticDto(topicId, topic.getName(), tutorCount, studentCount, groupCount, consultationCount);
         }).collect(Collectors.toList());
+    }
+
+    public List<UserStatisticDto> getStudentStatistics(StatisticFilterDto filter) {
+        return userRepository.getStudentStatistics(
+                filter.getFacultyId(),
+                filter.getTopicId(),
+                filter.getTutorId(),
+                filter.getStartDate(),
+                filter.getEndDate());
+    }
+
+    public List<UserStatisticDto> getTutorStatistics(StatisticFilterDto filter) {
+        return userRepository.getTutorStatistics(
+                filter.getFacultyId(),
+                filter.getTopicId(),
+                filter.getStudentId(),
+                filter.getStartDate(),
+                filter.getEndDate());
     }
 }
