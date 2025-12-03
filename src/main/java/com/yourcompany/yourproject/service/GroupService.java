@@ -205,4 +205,17 @@ public class GroupService {
                                 .map(this::convertToDto)
                                 .collect(Collectors.toList());
         }
+
+        @Transactional(readOnly = true)
+        public List<GroupResponseDto> getCreatedGroupsForCurrentUser() {
+                String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+                                .getUsername();
+                User user = userRepository.findByEmail(username)
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "User not found with email: " + username));
+
+                return groupRepository.findByTutorUid(user.getUid()).stream()
+                                .map(this::convertToDto)
+                                .collect(Collectors.toList());
+        }
 }

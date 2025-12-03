@@ -11,6 +11,8 @@ import java.util.List;
 @Repository
 public interface GroupRepository extends JpaRepository<Group, Long> {
 
+    List<Group> findByTutorUid(Long tutorId);
+
     List<Group> findByFacultyId(Long facultyId);
 
     @Query("SELECT g FROM Group g WHERE g.faculty.id = :facultyId AND g.tutor.uid = :tutorId")
