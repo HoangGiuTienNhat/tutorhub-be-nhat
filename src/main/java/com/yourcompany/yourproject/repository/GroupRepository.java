@@ -17,4 +17,14 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
 
     @Query("SELECT g FROM Group g WHERE g.faculty.id = :facultyId AND g.tutor.uid = :tutorId")
     List<Group> findByFacultyIdAndTutorId(@Param("facultyId") Long facultyId, @Param("tutorId") Long tutorId);
+
+    long countByFaculty_Id(Long facultyId);
+
+    long countByTopics_Id(Long topicId);
+
+    @Query("SELECT COUNT(DISTINCT g.tutor.uid) FROM Group g WHERE g.faculty.id = :facultyId")
+    long countDistinctTutorsByFaculty(@Param("facultyId") Long facultyId);
+
+    @Query("SELECT COUNT(DISTINCT g.tutor.uid) FROM Group g JOIN g.topics t WHERE t.id = :topicId")
+    long countDistinctTutorsByTopic(@Param("topicId") Long topicId);
 }

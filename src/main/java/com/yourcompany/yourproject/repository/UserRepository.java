@@ -20,4 +20,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE u.faculty.id = :facultyId AND u.role = 'STUDENT'")
     List<User> findStudentsByFaculty(@Param("facultyId") Long facultyId);
+
+    long countByFaculty_IdAndRole(Long facultyId, String role);
+
+    @Query("SELECT COUNT(DISTINCT u.uid) FROM User u JOIN u.joinedGroups g JOIN g.topics t WHERE t.id = :topicId AND u.role = 'STUDENT'")
+    long countStudentsByTopic(@Param("topicId") Long topicId);
 }
