@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString(exclude = { "password", "joinedGroups", "registeredConsultations", "feedbacks" })
+@ToString(exclude = { "password", "joinedGroups", "registeredConsultations", "feedbacks", "faculty" })
 public class User {
 
     @Id
@@ -36,6 +36,10 @@ public class User {
     private String password;
 
     private String role;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "faculty_id")
+    private Faculty faculty;
 
     @ManyToMany
     @JoinTable(name = "user_groups", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))

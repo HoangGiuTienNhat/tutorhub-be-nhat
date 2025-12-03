@@ -1,8 +1,12 @@
 package com.yourcompany.yourproject.service;
 
+import com.yourcompany.yourproject.dto.FacultyResponseDto;
+import com.yourcompany.yourproject.dto.RegisterRequest;
 import com.yourcompany.yourproject.dto.UserDto;
+import com.yourcompany.yourproject.entity.Faculty;
 import com.yourcompany.yourproject.entity.User;
 import com.yourcompany.yourproject.exception.ResourceNotFoundException;
+import com.yourcompany.yourproject.repository.FacultyRepository;
 import com.yourcompany.yourproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +20,7 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final FacultyRepository facultyRepository;
     private final PasswordEncoder passwordEncoder;
 
     public List<UserDto> getAllUsers() {
@@ -43,6 +48,31 @@ public class UserService {
         return convertToDto(savedUser);
     }
 
+    public UserDto register(RegisterRequest request) {
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setUserName(request.getUserName());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(request.getRole() != null ? request.getRole() : "STUDENT");
+
+        // If role is STUDENT, facultyId is required
+        if ("STUDENT".equalsIgnoreCase(user.getRole())) {
+            if (request.getFacultyId() == null) {
+                throw new ResourceNotFoundException("facultyId is required for STUDENT registration");
+            }
+        }
+
+        if (request.getFacultyId() != null) {
+            Faculty faculty = facultyRepository.findById(request.getFacultyId())
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Faculty not found with id: " + request.getFacultyId()));
+            user.setFaculty(faculty);
+        }
+
+        User saved = userRepository.save(user);
+        return convertToDto(saved);
+    }
+
     public UserDto updateUser(Long id, User userDetails) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
@@ -50,6 +80,7 @@ public class UserService {
         user.setUserName(userDetails.getUserName());
         user.setEmail(userDetails.getEmail());
         user.setRole(userDetails.getRole());
+        user.setFaculty(userDetails.getFaculty());
 
         User updatedUser = userRepository.save(user);
         return convertToDto(updatedUser);
@@ -62,10 +93,15 @@ public class UserService {
     }
 
     private UserDto convertToDto(User user) {
+        FacultyResponseDto facultyDto = null;
+        if (user.getFaculty() != null) {
+            facultyDto = new FacultyResponseDto(user.getFaculty().getId(), user.getFaculty().getName());
+        }
         return new UserDto(
                 user.getUid(),
                 user.getUserName(),
                 user.getEmail(),
-                user.getRole());
+                user.getRole(),
+                facultyDto);
     }
 }
