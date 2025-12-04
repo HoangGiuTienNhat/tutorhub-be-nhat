@@ -12,6 +12,7 @@ import com.yourcompany.yourproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,24 +25,28 @@ public class UserService {
     private final FacultyRepository facultyRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
         return convertToDto(user);
     }
 
+    @Transactional(readOnly = true)
     public UserDto getUserByEmail(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
         return convertToDto(user);
     }
 
+    @Transactional
     public UserDto createUser(User user) {
         // Encode password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -49,6 +54,7 @@ public class UserService {
         return convertToDto(savedUser);
     }
 
+    @Transactional
     public UserDto register(RegisterRequest request) {
         // Since UID is mandatory, we check for its existence directly.
         if (userRepository.existsById(request.getUid())) {
@@ -77,6 +83,7 @@ public class UserService {
         return convertToDto(saved);
     }
 
+    @Transactional
     public UserDto updateUser(Long id, User userDetails) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
@@ -90,6 +97,7 @@ public class UserService {
         return convertToDto(updatedUser);
     }
 
+    @Transactional
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
@@ -112,6 +120,7 @@ public class UserService {
                 facultyDto);
     }
 
+    @Transactional
     public UserDto updateProfile(String email, UpdateProfileRequest request) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
