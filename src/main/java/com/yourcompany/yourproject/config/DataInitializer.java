@@ -1,6 +1,8 @@
 package com.yourcompany.yourproject.config;
 
+import com.yourcompany.yourproject.entity.Faculty;
 import com.yourcompany.yourproject.entity.User;
+import com.yourcompany.yourproject.repository.FacultyRepository;
 import com.yourcompany.yourproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,12 +17,19 @@ public class DataInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final FacultyRepository facultyRepository;
 
     @Override
     public void run(String... args) throws Exception {
+        // Create default faculty
+        Faculty defaultFaculty = facultyRepository.findByName("Default Faculty").orElseGet(() -> {
+            Faculty faculty = Faculty.builder().name("Default Faculty").build();
+            return facultyRepository.save(faculty);
+        });
         // Check if test user already exists
         if (!userRepository.existsByEmail("test@example.com")) {
             User testUser = User.builder()
+                    .uid(999999L)
                     .email("test@example.com")
                     .userName("testuser")
                     .password(passwordEncoder.encode("password123"))
@@ -36,6 +45,7 @@ public class DataInitializer implements CommandLineRunner {
         // Create admin user
         if (!userRepository.existsByEmail("admin@tutorhub.com")) {
             User adminUser = User.builder()
+                    .uid(1L)
                     .email("admin@tutorhub.com")
                     .userName("Administrator")
                     .password(passwordEncoder.encode("admin123"))
@@ -49,10 +59,12 @@ public class DataInitializer implements CommandLineRunner {
         // Create student user
         if (!userRepository.existsByEmail("student@tutorhub.com")) {
             User studentUser = User.builder()
+                    .uid(2110000L)
                     .email("student@tutorhub.com")
                     .userName("Nguyễn Văn A")
                     .password(passwordEncoder.encode("student123"))
                     .role("STUDENT")
+                    .faculty(defaultFaculty)
                     .build();
 
             userRepository.save(studentUser);
@@ -62,10 +74,12 @@ public class DataInitializer implements CommandLineRunner {
         // Create tutor user
         if (!userRepository.existsByEmail("tutor@tutorhub.com")) {
             User tutorUser = User.builder()
+                    .uid(2110001L)
                     .email("tutor@tutorhub.com")
                     .userName("Trần Thị B")
                     .password(passwordEncoder.encode("tutor123"))
                     .role("TUTOR")
+                    .faculty(defaultFaculty)
                     .build();
 
             userRepository.save(tutorUser);
@@ -75,10 +89,12 @@ public class DataInitializer implements CommandLineRunner {
         // Create HCMUT student user
         if (!userRepository.existsByEmail("student@hcmut.edu.vn")) {
             User hcmutStudent = User.builder()
+                    .uid(2212345L)
                     .email("student@hcmut.edu.vn")
                     .userName("HCMUT Student")
                     .password(passwordEncoder.encode("hcmut123"))
                     .role("Student")
+                    .faculty(defaultFaculty)
                     .build();
 
             userRepository.save(hcmutStudent);
