@@ -66,13 +66,6 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(request.getRole() != null ? request.getRole() : "STUDENT");
 
-        // If role is STUDENT, facultyId is required
-        if ("STUDENT".equalsIgnoreCase(user.getRole())) {
-            if (request.getFacultyId() == null) {
-                throw new ResourceNotFoundException("facultyId is required for STUDENT registration");
-            }
-        }
-
         if (request.getFacultyId() != null) {
             Faculty faculty = facultyRepository.findById(request.getFacultyId())
                     .orElseThrow(() -> new ResourceNotFoundException(
